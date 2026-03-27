@@ -1,0 +1,47 @@
+1.
+-Trong code hướng dẫn cho trước, khi bấm cancel thì kết quả sẽ trả về là bạn chọn NO.
+-Lí do là vì theo dòng code option == JOptionPane.YES_OPTION? "YES" : "NO" thì tất cả mọi thứ bạn bấm đều sẽ cho ra kết quả là 
+NO trừ khi bạn chọn YES tại nó chỉ xét trường hợp bạn có chọn YES hay không và bỏ qua các option còn lại.
+
+2.
+-Sửa sao cho chỉ còn 2 lựa chọn YES or NO thì chỉ cần sử dụng JOptionPane.YES_NO_OPTION thay 
+JOptionPane.showMessageDialog(null, "You've chosen: " + (option == JOptionPane.YES_OPTION? "YES" : "NO")) là được. Code sẽ thành
+
+package Lab01;
+
+import javax.swing.JOptionPane;
+
+public class Ex61 {
+    public static void main(String[] args) {
+        int option = JOptionPane.showConfirmDialog(null, 
+            "Do you want to change to the first class ticket?",
+            "Confirmation", 
+            JOptionPane.YES_NO_OPTION);
+        System.exit(0);
+    }
+}
+
+-Đổi tên nút thành "I do" và "I dont": bằng cách dùng showOptionDialog:
+
+package Lab01;
+
+import javax.swing.JOptionPane;
+
+public class Ex61 {
+    public static void main(String[] args) {
+        Object[] options = {"I do", "I don't"};
+
+        int option = JOptionPane.showOptionDialog(null,
+            "Do you want to change to the first class ticket?",
+            "Confirm",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[0]);
+
+        JOptionPane.showMessageDialog(null,
+            "You've chosen: " + options[option]);
+    }
+}
+
