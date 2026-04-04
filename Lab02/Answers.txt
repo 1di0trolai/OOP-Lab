@@ -1,0 +1,38 @@
+Question: If you create a constructor method to build a DVD by title then create a constructor method to build a DVD by category. Does JAVA allow you to do this?
+    Có nhưng phải tuân theo quy tắc của Java
+    Java cho phép tạo nhiều constructor trong cùng một lớp (constructor overloading) nhưng các constructor này phải khác nhau về danh sách tham số (kiểu dữ liệu, số lượng, hoặc thứ tự)
+    VD: 
+    DigitalVideoDisc(String title)
+    DigitalVideoDisc(String category)
+    → Không hợp lệ vì cả hai đều có cùng chữ ký là DigitalVideoDisc(String)
+    Hoặc:
+    DigitalVideoDisc(String title)
+    DigitalVideoDisc(String title, String category)
+    -> Hợp lệ
+
+Question: Is JAVA a Pass by Value or a Pass by Reference programming language? 
+    Trong Java mọi tham số khi truyền vào hàm đều được truyền bằng giá trị (value) và có 2 trường hợp:
+    1. Kiểu nguyên thủy (primitive types)
+    Ví dụ: int, double, boolean, ...
+    Giá trị thực sự được truyền vào hàm
+    Thay đổi trong hàm không ảnh hưởng đến biến bên ngoài
+    2. Object (reference types)
+    Java vẫn truyền giá trị nhưng giá trị đó là địa chỉ tham chiếu của object
+    Có thể thay đổi nội dung object bên trong hàm
+    Nhưng không thể thay đổi reference gốc bên ngoài
+
+Question: 
+	1. After the call of swap(jungleDVD, cinderellaDVD) why does the title of these two objects still remain?
+	2. After the call of changeTitle(jungleDVD, cinderellaDVD.getTitle()) why is the title of the JungleDVD changed?
+
+    1. Trong Java tham số được truyền theo pass by value.
+    Với object thì giá trị được truyền là bản sao của reference.
+    Khi gọi swap(jungleDVD, cinderellaDVD), hàm chỉ nhận bản sao của các reference
+    Việc hoán đổi bên trong hàm chỉ làm thay đổi bản sao đó, không ảnh hưởng đến reference gốc bên ngoài
+
+    2. jungleDVD được truyền vào dưới dạng bản sao của reference nhưng vẫn trỏ tới cùng một object
+    Khi trong hàm gọi phương thức như setTitle(...), bạn đang thay đổi trạng thái của object thật
+    -> object jungleDVD bên ngoài bị thay đổi tiêu đề
+
+    swap(...) không đổi gì vì chỉ thay đổi reference cục bộ
+    changeTitle(...) làm thay đổi object vì tác động trực tiếp lên dữ liệu bên trong object
