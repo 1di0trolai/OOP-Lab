@@ -4,3 +4,4 @@
 *.jar
 .venv/
 .vscode/
+read_docx.py
