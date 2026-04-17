@@ -1,4 +1,4 @@
-package Lab01;
+package hust.soict.hedspi.lab01;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -11,7 +11,7 @@ public class Ex65 {
         int n = sc.nextInt();
         double[] arr = new double[n];
 
-        for (int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++) {
             System.out.print("arr[" + i + "] = ");
             arr[i] = sc.nextDouble();
         }
