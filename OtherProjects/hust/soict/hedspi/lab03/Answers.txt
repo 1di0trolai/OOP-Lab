@@ -1,0 +1,25 @@
+1. What class should implement the Comparable interface?
+Để cho phép tất cả các mặt hàng trong giỏ (cart) được so sánh và sắp xếp cùng nhau, lớp cha (thường là lớp Media hoặc Item) 
+nên triển khai interface Comparable<Media>. Khi lớp cha thực thi interface này, tất cả các lớp con (như DigitalVideoDisc, Book, CompactDisc) 
+sẽ tự động kế thừa khả năng so sánh và có thể được đặt chung vào một bộ sưu tập (collection) để tiến hành sắp xếp.
+
+2. In those classes, how should you implement the compareTo()method to reflect the ordering that we want?
+- Bạn sẽ ghi đè (override) phương thức compareTo() trong lớp cha để xác định "thứ tự tự nhiên" (natural ordering). Với quy tắc mặc định là sắp xếp 
+theo tiêu đề (title) rồi đến giá (cost), logic sẽ như sau:
+    + Đầu tiên, bạn so sánh tiêu đề theo bảng chữ cái (dùng phương thức compareTo() của lớp String). Nếu tiêu đề khác nhau, bạn trả về luôn kết quả so sánh này.
+    + Nếu tiêu đề giống hệt nhau, bạn tiếp tục so sánh thuộc tính giá theo thứ tự tăng dần (nên dùng Double.compare(this.getCost(), other.getCost()) để đảm bảo 
+    độ chính xác khi so sánh số thực).
+
+3. Can we have two ordering rules of the item (by title then cost and by cost then title) if we use this Comparable interface approach?
+- Không, bạn không thể. Interface Comparable được thiết kế đặc biệt để chỉ định nghĩa một "thứ tự tự nhiên" duy nhất cho một lớp. Vì bạn chỉ có thể 
+ghi đè phương thức compareTo() một lần trong một lớp, nên lớp đó chỉ có thể sở hữu một hành vi sắp xếp mặc định.
+- Nếu bạn cần nhiều quy tắc sắp xếp linh hoạt khác nhau cho cùng một đối tượng, bạn bắt buộc phải chuyển sang sử dụng interface Comparator.
+
+4. Suppose the DVDs have a different ordering rule from the other media types, that is by title, then decreasing length, then cost. How would you modify your code to allow this?
+- Để làm được điều này, bạn cần ghi đè phương thức compareTo() một lần nữa, nhưng là ở bên trong lớp con DigitalVideoDisc.
+    + Đầu tiên, hãy dùng toán tử instanceof để kiểm tra xem đối tượng đang được so sánh (other) có phải cũng là một chiếc DVD hay không.
+    + Nếu đúng là DVD: Bạn ép kiểu (cast) đối tượng đó về DigitalVideoDisc. Sau đó tiến hành so sánh lần lượt: tiêu đề (tăng dần). Nếu tiêu đề giống nhau, 
+    chuyển sang so sánh độ dài. Điểm mấu chốt để sắp xếp giảm dần là bạn phải đảo ngược vị trí biến khi so sánh (ví dụ: Integer.compare(otherDVD.getLength(), 
+    this.getLength())). Cuối cùng, nếu độ dài cũng bằng nhau, tiến hành so sánh giá (tăng dần).
+    + Nếu đối tượng không phải là DVD: Bạn chỉ cần sử dụng lệnh return super.compareTo(other); để dự phòng và gọi lại logic sắp xếp tiêu chuẩn đã được 
+    định nghĩa ở lớp cha Media.
