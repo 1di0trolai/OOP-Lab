@@ -4,6 +4,8 @@ import java.util.Scanner;
 import hust.soict.hedspi.aims.cart.Cart;
 import hust.soict.hedspi.aims.store.Store;
 import hust.soict.hedspi.aims.media.*;
+import hust.soict.hedspi.aims.exception.LimitExceededException;
+import hust.soict.hedspi.aims.exception.PlayerException;
 
 public class Aims {
     private static Store store = new Store();
@@ -80,7 +82,7 @@ public class Aims {
             storeMenu();
             int choice = scanner.nextInt();
             scanner.nextLine();
-            switch(choice) {
+            switch (choice) {
                 case 1:
                     seeMediaDetails();
                     break;
@@ -89,7 +91,11 @@ public class Aims {
                     String titleCart = scanner.nextLine();
                     Media mCart = store.fetchMedia(titleCart);
                     if (mCart != null) {
-                        cart.addMedia(mCart);
+                        try {
+                            cart.addMedia(mCart);
+                        } catch (LimitExceededException e) {
+                            System.out.println(e.getMessage());
+                        }
                     } else {
                         System.out.println("Media not found.");
                     }
@@ -100,7 +106,11 @@ public class Aims {
                     Media mPlay = store.fetchMedia(titlePlay);
                     if (mPlay != null) {
                         if (mPlay instanceof Playable) {
-                            ((Playable)mPlay).play();
+                            try {
+                                ((Playable) mPlay).play();
+                            } catch (PlayerException e) {
+                                System.out.println(e.getMessage());
+                            }
                         } else {
                             System.out.println("This media is not playable.");
                         }
@@ -128,20 +138,28 @@ public class Aims {
         System.out.println("0. Back");
         System.out.println("--------------------------------");
         System.out.print("Please choose a number: 0-1-2: ");
-        
+
         boolean back = false;
         while (!back) {
             int choice = scanner.nextInt();
             scanner.nextLine();
-            switch(choice) {
+            switch (choice) {
                 case 1:
-                    cart.addMedia(media);
-                    System.out.println("Added to cart.");
+                    try {
+                        cart.addMedia(media);
+                        System.out.println("Added to cart.");
+                    } catch (LimitExceededException e) {
+                        System.out.println(e.getMessage());
+                    }
                     back = true;
                     break;
                 case 2:
                     if (media instanceof Playable) {
-                        ((Playable)media).play();
+                        try {
+                            ((Playable) media).play();
+                        } catch (PlayerException e) {
+                            System.out.println(e.getMessage());
+                        }
                     } else {
                         System.out.println("This media is not playable.");
                     }
@@ -186,7 +204,7 @@ public class Aims {
             System.out.print("Enter cost: ");
             float cost = scanner.nextFloat();
             scanner.nextLine();
-            
+
             if (type == 1) {
                 store.addMedia(new Book(title, category, cost));
             } else if (type == 2) {
@@ -215,7 +233,7 @@ public class Aims {
             cartMenu();
             int choice = scanner.nextInt();
             scanner.nextLine();
-            switch(choice) {
+            switch (choice) {
                 case 1:
                     System.out.print("Filter by (1) ID or (2) Title? ");
                     int f = scanner.nextInt();
@@ -255,7 +273,11 @@ public class Aims {
                     Media mToPlay = cart.fetchMedia(pTitle);
                     if (mToPlay != null) {
                         if (mToPlay instanceof Playable) {
-                            ((Playable)mToPlay).play();
+                            try {
+                                ((Playable) mToPlay).play();
+                            } catch (PlayerException e) {
+                                System.out.println(e.getMessage());
+                            }
                         } else {
                             System.out.println("Media is not playable.");
                         }
