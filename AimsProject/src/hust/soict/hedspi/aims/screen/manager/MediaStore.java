@@ -16,12 +16,11 @@ import javax.swing.JPanel;
 
 import hust.soict.hedspi.aims.media.Media;
 import hust.soict.hedspi.aims.media.Playable;
+import hust.soict.hedspi.aims.exception.PlayerException;
 
 public class MediaStore extends JPanel {
-    private Media media;
 
     public MediaStore(Media media) {
-        this.media = media;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel(media.getTitle());
@@ -52,7 +51,11 @@ public class MediaStore extends JPanel {
                     playDialog.setVisible(true);
                     
                     // Actually call play to console as well
-                    ((Playable) media).play();
+                    try {
+                        ((Playable) media).play();
+                    } catch (PlayerException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             });
             container.add(playButton);
